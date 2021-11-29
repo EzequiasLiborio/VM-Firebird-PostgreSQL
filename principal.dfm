@@ -80,21 +80,21 @@ object Form1: TForm1
   end
   object sbtnProdutos: TSpeedButton
     Left = 8
-    Top = 223
-    Width = 209
+    Top = 263
+    Width = 497
     Height = 22
     Caption = 'produtos'
     OnClick = sbtnProdutosClick
   end
   object lblCodInicial: TLabel
-    Left = 288
+    Left = 528
     Top = 176
     Width = 56
     Height = 13
     Caption = 'lblCodInicial'
   end
   object lblCodFinal: TLabel
-    Left = 350
+    Left = 608
     Top = 176
     Width = 51
     Height = 13
@@ -4272,6 +4272,38 @@ object Form1: TForm1
     Height = 13
     Caption = 'lblTotal'
   end
+  object SpeedButton2: TSpeedButton
+    Left = 232
+    Top = 1
+    Width = 209
+    Height = 22
+    Caption = 'categorias'
+    OnClick = sbtnAnosClick
+  end
+  object SpeedButton3: TSpeedButton
+    Left = 232
+    Top = 29
+    Width = 209
+    Height = 22
+    Caption = 'Versao motores'
+    OnClick = sbtnAnosClick
+  end
+  object SpeedButton4: TSpeedButton
+    Left = 232
+    Top = 57
+    Width = 209
+    Height = 22
+    Caption = 'Familias'
+    OnClick = sbtnAnosClick
+  end
+  object SpeedButton5: TSpeedButton
+    Left = 232
+    Top = 85
+    Width = 209
+    Height = 22
+    Caption = 'injecoes'
+    OnClick = sbtnAnosClick
+  end
   object edtCodigo: TEdit
     Left = 192
     Top = 297
@@ -4286,8 +4318,8 @@ object Form1: TForm1
       'Password=masterkey'
       'User_Name=sysdba'
       'DriverID=FB')
-    Left = 392
-    Top = 24
+    Left = 680
+    Top = 96
   end
   object fdcPgVendaM: TFDConnection
     Params.Strings = (
@@ -4296,7 +4328,7 @@ object Form1: TForm1
       'Password=masterkey'
       'DriverID=PG')
     Transaction = fdtPg
-    Left = 528
+    Left = 592
     Top = 24
   end
   object FDPhysPgDriverLink1: TFDPhysPgDriverLink

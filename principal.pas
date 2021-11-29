@@ -41,6 +41,10 @@ type
     SpeedButton1: TSpeedButton;
     lblCod: TLabel;
     lblTotal: TLabel;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    SpeedButton4: TSpeedButton;
+    SpeedButton5: TSpeedButton;
     procedure sbtnAnosClick(Sender: TObject);
     procedure sbtnCombustiveisClick(Sender: TObject);
     procedure stbnFotosClick(Sender: TObject);
@@ -527,9 +531,9 @@ begin
               sql.Clear;
 
               sql.add('INSERT INTO anos(codigo, deletado, datacadastrado, dataalterado,');
-              sql.add('datadeletado, colaborador, datainicial, datafinal, padraoantigo, complemento)  ');
+              sql.add('datadeletado, colaborador, datainicial, datafinal)  ');
               sql.add('VALUES (:codigo, :deletado, :datacadastrado, :dataalterado, ');
-              sql.add(':datadeletado, :colaborador, :datainicial, :datafinal, :padraoantigo, :complemento);');
+              sql.add(':datadeletado, :colaborador, :datainicial, :datafinal);');
 
               ParamByName('codigo').AsInteger   := queryFb.FieldByName('codigo').AsInteger;
               ParamByName('deletado').AsInteger := queryFb.FieldByName('deletado').AsInteger;
@@ -542,9 +546,6 @@ begin
               ParamByName('colaborador').AsInteger := queryFb.FieldByName('colaborador').AsInteger;
               ParamByName('datainicial').AsInteger := queryFb.FieldByName('datainicial').AsInteger;
               ParamByName('datafinal').AsInteger   := queryFb.FieldByName('datafinal').AsInteger;
-              ParamByName('padraoantigo').AsString := queryFb.FieldByName('padraoantigo').AsString;
-              ParamByName('complemento').AsVarByteStr := queryFb.FieldByName('complemento')
-                .AsVariant;
 
             end;
           tblCombustiveis:
@@ -553,9 +554,9 @@ begin
               sql.Clear;
 
               sql.add('INSERT INTO combustiveis(codigo, descricao, deletado, datacadastrado, dataalterado,');
-              sql.add('datadeletado, complemento)                                                         ');
+              sql.add('datadeletado)                                                         ');
               sql.add('VALUES (:codigo, :descricao, :deletado, :datacadastrado, :dataalterado,            ');
-              sql.add(':datadeletado, :complemento);                                                      ');
+              sql.add(':datadeletado);                                                      ');
 
               ParamByName('codigo').AsInteger   := queryFb.FieldByName('codigo').AsInteger;
               ParamByName('descricao').AsString := queryFb.FieldByName('descricao').AsString;
@@ -566,8 +567,6 @@ begin
                 .AsDateTime;
               ParamByName('datadeletado').AsDateTime := queryFb.FieldByName('datadeletado')
                 .AsDateTime;
-              ParamByName('complemento').AsVarByteStr := queryFb.FieldByName('complemento')
-                .AsVariant;
 
             end;
           tblFotos:
@@ -608,9 +607,9 @@ begin
               sql.Clear;
 
               sql.add('INSERT INTO marcas(codigo, descricao, deletado, datacadastrado, dataalterado,      ');
-              sql.add('datadeletado, complemento)                                                         ');
+              sql.add('datadeletado)                                                         ');
               sql.add('VALUES (:codigo, :descricao, :deletado, :datacadastrado, :dataalterado,            ');
-              sql.add(':datadeletado, :complemento);                                                      ');
+              sql.add(':datadeletado);                                                      ');
 
               ParamByName('codigo').AsInteger   := queryFb.FieldByName('codigo').AsInteger;
               ParamByName('descricao').AsString := queryFb.FieldByName('descricao').AsString;
@@ -621,8 +620,6 @@ begin
                 .AsDateTime;
               ParamByName('datadeletado').AsDateTime := queryFb.FieldByName('datadeletado')
                 .AsDateTime;
-              ParamByName('complemento').AsVarByteStr := queryFb.FieldByName('complemento')
-                .AsVariant;
 
             end;
           tblModelos:
@@ -631,9 +628,9 @@ begin
               sql.Clear;
 
               sql.add('INSERT INTO modelos(codigo, descricao, deletado, datacadastrado, dataalterado,  ');
-              sql.add('datadeletado, complemento, montadora, datainicial, datafinal )                  ');
+              sql.add('datadeletado, montadora, datainicial, datafinal )                               ');
               sql.add('VALUES (:codigo, :descricao, :deletado, :datacadastrado, :dataalterado,         ');
-              sql.add(':datadeletado, :complemento, :montadora, :datainicial, :datafinal );            ');
+              sql.add(':datadeletado, :montadora, :datainicial, :datafinal );                          ');
 
               ParamByName('codigo').AsInteger   := queryFb.FieldByName('codigo').AsInteger;
               ParamByName('descricao').AsString := queryFb.FieldByName('descricao').AsString;
@@ -644,8 +641,6 @@ begin
                 .AsDateTime;
               ParamByName('datadeletado').AsDateTime := queryFb.FieldByName('datadeletado')
                 .AsDateTime;
-              ParamByName('complemento').AsVarByteStr := queryFb.FieldByName('complemento')
-                .AsVariant;
               ParamByName('montadora').AsInteger   := queryFb.FieldByName('montadora').AsInteger;
               ParamByName('datainicial').AsInteger := queryFb.FieldByName('datainicial').AsInteger;
               ParamByName('datafinal').AsInteger   := queryFb.FieldByName('datafinal').AsInteger;
@@ -657,9 +652,9 @@ begin
               sql.Clear;
 
               sql.add('INSERT INTO montadoras(codigo, descricao, deletado, datacadastrado, dataalterado,  ');
-              sql.add('datadeletado, complemento )                                                        ');
+              sql.add('datadeletado )                                                                     ');
               sql.add('VALUES (:codigo, :descricao, :deletado, :datacadastrado, :dataalterado,            ');
-              sql.add(':datadeletado, :complemento );                                                     ');
+              sql.add(':datadeletado );                                                                   ');
 
               ParamByName('codigo').AsInteger   := queryFb.FieldByName('codigo').AsInteger;
               ParamByName('descricao').AsString := queryFb.FieldByName('descricao').AsString;
@@ -670,8 +665,6 @@ begin
                 .AsDateTime;
               ParamByName('datadeletado').AsDateTime := queryFb.FieldByName('datadeletado')
                 .AsDateTime;
-              ParamByName('complemento').AsVarByteStr := queryFb.FieldByName('complemento')
-                .AsVariant;
 
             end;
 
@@ -681,9 +674,9 @@ begin
               sql.Clear;
 
               sql.add('INSERT INTO motores(codigo, descricao, deletado, datacadastrado, dataalterado,  ');
-              sql.add('datadeletado, complemento)                                                      ');
+              sql.add('datadeletado)                                                                   ');
               sql.add('VALUES (:codigo, :descricao, :deletado, :datacadastrado, :dataalterado,         ');
-              sql.add(':datadeletado, :complemento);                                                   ');
+              sql.add(':datadeletado);                                                                 ');
 
               ParamByName('codigo').AsInteger   := queryFb.FieldByName('codigo').AsInteger;
               ParamByName('descricao').AsString := queryFb.FieldByName('descricao').AsString;
@@ -694,8 +687,6 @@ begin
                 .AsDateTime;
               ParamByName('datadeletado').AsDateTime := queryFb.FieldByName('datadeletado')
                 .AsDateTime;
-              ParamByName('complemento').AsVarByteStr := queryFb.FieldByName('complemento')
-                .AsVariant;
 
             end;
           tblSegmentos:
@@ -704,9 +695,9 @@ begin
               sql.Clear;
 
               sql.add('INSERT INTO segmentos(codigo, descricao, deletado, datacadastrado, dataalterado,');
-              sql.add('datadeletado, complemento)                                                      ');
+              sql.add('datadeletado)                                                                   ');
               sql.add('VALUES (:codigo, :descricao, :deletado, :datacadastrado, :dataalterado,         ');
-              sql.add(':datadeletado, :complemento);                                                   ');
+              sql.add(':datadeletado );                                                                ');
 
               ParamByName('codigo').AsInteger   := queryFb.FieldByName('codigo').AsInteger;
               ParamByName('descricao').AsString := queryFb.FieldByName('descricao').AsString;
@@ -717,8 +708,6 @@ begin
                 .AsDateTime;
               ParamByName('datadeletado').AsDateTime := queryFb.FieldByName('datadeletado')
                 .AsDateTime;
-              ParamByName('complemento').AsVarByteStr := queryFb.FieldByName('complemento')
-                .AsVariant;
 
             end;
           tblProdutos:
@@ -751,9 +740,8 @@ begin
               ParamByName('combustivel').AsInteger := queryFb.FieldByName('combustivel').AsInteger;
               ParamByName('versao').AsInteger      := queryFb.FieldByName('versao').AsInteger;
               ParamByName('versaomotor').AsInteger := queryFb.FieldByName('versaomotor').AsInteger;
-              ParamByName('observacoes').AsVarByteStr := queryFb.FieldByName('observacoes')
-                .AsVariant;
-              ParamByName('deletado').AsInteger      := queryFb.FieldByName('deletado').AsInteger;
+              ParamByName('observacoes').AsString  := queryFb.FieldByName('observacoes').AsString;
+              ParamByName('deletado').AsInteger    := queryFb.FieldByName('deletado').AsInteger;
               ParamByName('datadeletado').AsDateTime := queryFb.FieldByName('datadeletado')
                 .AsDateTime;
 
