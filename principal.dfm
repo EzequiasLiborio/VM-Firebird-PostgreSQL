@@ -4305,8 +4305,8 @@ object Form1: TForm1
     OnClick = sbtnAnosClick
   end
   object edtCodigo: TEdit
-    Left = 192
-    Top = 297
+    Left = 184
+    Top = 298
     Width = 105
     Height = 21
     TabOrder = 0
