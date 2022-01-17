@@ -10,7 +10,7 @@ uses
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys, FireDAC.Phys.FB,
   FireDAC.Phys.FBDef, FireDAC.VCLUI.Wait, FireDAC.Phys.PG, FireDAC.Phys.PGDef,
   Data.DB, FireDAC.Comp.Client, FireDAC.Comp.DataSet, Vcl.Buttons, Vcl.StdCtrls,
-  Vcl.ExtCtrls, Vcl.Imaging.jpeg;
+  Vcl.ExtCtrls, Vcl.Imaging.jpeg, Vcl.DBCtrls, XDBCtrls;
 
 type
   TtabelaType = (tblAnos, tblCombustiveis, tblFotos, tblMarcas, tblModelos, tblMontadoras,
@@ -36,8 +36,8 @@ type
     lblHF: TLabel;
     sbtnTransformar: TSpeedButton;
     edtCodigo: TEdit;
-    imgFoto1: TImage;
-    imgFoto2: TImage;
+    imgFotoBck1: TImage;
+    imgFotoBck2: TImage;
     SpeedButton1: TSpeedButton;
     lblCod: TLabel;
     lblTotal: TLabel;
@@ -45,6 +45,12 @@ type
     SpeedButton3: TSpeedButton;
     SpeedButton4: TSpeedButton;
     SpeedButton5: TSpeedButton;
+    imgFoto1: TImage;
+    imgFoto2: TImage;
+    lblDescricao: TLabel;
+    DataSource1: TDataSource;
+    fdqProdutos: TFDQuery;
+    xndbProdutos: TXDBNavigator;
     procedure sbtnAnosClick(Sender: TObject);
     procedure sbtnCombustiveisClick(Sender: TObject);
     procedure stbnFotosClick(Sender: TObject);
@@ -56,6 +62,8 @@ type
     procedure sbtnProdutosClick(Sender: TObject);
     procedure transformarImgFbPg(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure xndbProdutosClick(Sender: TObject; Button: TNavigateBtn);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
     procedure confTrasacao;
@@ -223,6 +231,11 @@ begin
 
 end;
 
+procedure TForm1.FormShow(Sender: TObject);
+begin
+  fdqProdutos.Active := true;
+end;
+
 function TForm1.LoadImage(AImage: TImage; ABlobField: TBlobField): Boolean;
 var
   JpgImg: TPicture;
@@ -249,7 +262,7 @@ begin
       JpgImg.Free;
     end;
   end;
-  Result := True;
+  Result := true;
 end;
 
 procedure TForm1.sbtnCombustiveisClick(Sender: TObject);
@@ -289,10 +302,17 @@ end;
 
 procedure TForm1.SpeedButton1Click(Sender: TObject);
 var
-  queryPg:     TFDQuery;
-  streamFoto1: TStream;
-  streamFoto2: TStream;
+  queryPg:                        TFDQuery;
+  streamFotoBck1, streamFotoBck2: TStream;
+  streamFoto1, streamFoto2:       TStream;
+  idft1, idft2:                   integer;
 begin
+
+  imgFotoBck1.Picture  := nil;
+  imgFotoBck2.Picture  := nil;
+  imgFoto1.Picture     := nil;
+  imgFoto2.Picture     := nil;
+  lblDescricao.Caption := '';
 
   queryPg := TFDQuery.Create(nil);
 
@@ -301,10 +321,13 @@ begin
     begin
       Connection := fdcPgVendaM;
 
+      idft1 := 0;
+      idft2 := 0;
+
       close;
       sql.Clear;
 
-      sql.add('select * from fotos');
+      sql.add('select foto1, foto2, referencia from produtos');
       sql.add('where codigo = :cod');
 
       ParamByName('cod').AsInteger := StrToInt(edtCodigo.Text);
@@ -314,29 +337,95 @@ begin
 
       if not eof then
       begin
+        lblDescricao.Caption := FieldByName('referencia').AsString;
+        idft1                := FieldByName('foto1').AsInteger;
+        idft2                := FieldByName('foto2').AsInteger;
 
-        if not FieldByName('foto1').IsNull then
+        close;
+        sql.Clear;
+
+        sql.add('select * from fotosbck');
+        sql.add('where codigo = :cod');
+
+        ParamByName('cod').AsInteger := StrToInt(edtCodigo.Text);
+
+        open;
+        first;
+
+        if not eof then
         begin
 
-          streamFoto1 := CreateBlobStream(FieldByName('foto1'), bmRead);
+          if not FieldByName('foto1').IsNull then
+          begin
 
-          if (streamFoto1.Size > 0) then
-            imgFoto1.Picture.LoadFromStream(streamFoto1);
+            streamFotoBck1 := CreateBlobStream(FieldByName('foto1'), bmRead);
+
+            if (streamFotoBck1.Size > 0) then
+              imgFotoBck1.Picture.LoadFromStream(streamFotoBck1);
+
+            freeAndNil(streamFotoBck1);
+
+          end;
+
+          if not FieldByName('foto2').IsNull then
+          begin
+
+            streamFotoBck2 := CreateBlobStream(FieldByName('foto2'), bmRead);
+
+            if (streamFotoBck2.Size > 0) then
+              imgFotoBck2.Picture.LoadFromStream(streamFotoBck2);
+
+            freeAndNil(streamFotoBck2);
+          end;
+
+          { nota tabela }
+          close;
+          sql.Clear;
+
+          sql.add('select foto from fotos ');
+          sql.add('where id = :id         ');
+
+          ParamByName('id').AsInteger := idft1;
+
+          open;
+          first;
+
+          if not eof then
+            if not FieldByName('foto').IsNull then
+            begin
+
+              streamFoto1 := CreateBlobStream(FieldByName('foto'), bmRead);
+
+              if (streamFoto1.Size > 0) then
+                imgFoto1.Picture.LoadFromStream(streamFoto1);
+
+              freeAndNil(streamFoto1);
+            end;
+
+          close;
+          sql.Clear;
+
+          sql.add('select foto from fotos ');
+          sql.add('where id = :id         ');
+
+          ParamByName('id').AsInteger := idft2;
+
+          open;
+          first;
+
+          if not eof then
+            if not FieldByName('foto').IsNull then
+            begin
+
+              streamFoto2 := CreateBlobStream(FieldByName('foto'), bmRead);
+
+              if (streamFoto2.Size > 0) then
+                imgFoto2.Picture.LoadFromStream(streamFoto2);
+
+              freeAndNil(streamFoto2);
+            end;
 
         end;
-
-        if not FieldByName('foto2').IsNull then
-        begin
-
-          streamFoto2 := CreateBlobStream(FieldByName('foto2'), bmRead);
-
-          if (streamFoto2.Size > 0) then
-            imgFoto2.Picture.LoadFromStream(streamFoto2);
-
-        end;
-
-        freeAndNil(streamFoto1);
-        freeAndNil(streamFoto2);
 
       end;
 
@@ -783,6 +872,14 @@ begin
   end;
   Application.ProcessMessages;
 
+end;
+
+procedure TForm1.xndbProdutosClick(Sender: TObject; Button: TNavigateBtn);
+begin
+
+  edtCodigo.Text := xndbProdutos.DataSource.DataSet.FieldByName('codigo').AsString;
+
+  SpeedButton1Click(SpeedButton1);
 end;
 
 end.
